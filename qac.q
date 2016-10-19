@@ -10,10 +10,4 @@ print:.counter.print
 detach:.counter.detach
 fname:.counter.fname
 rm:.counter.rm
-\
-.shm:(`qac 2:(`shm;1))`
-copy:.shm.copy
-peek:.shm.peek
-join:.shm.join
-amend:.shm.amend
 
