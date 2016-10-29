@@ -50,21 +50,21 @@ K1(restart){TC(x,-KS);struct rszshm*r;P(!rszshm_atm(r,++xs),KRR(errno));K v;
     R v=ktn(0,2),kK(v)[0]=kc(-KJ),kK(v)[1]=ptr(r),v;}
 
 /// f:fname c / f~`:/dev/rszshm_xxxxxx/0 (useful for restart f)
-K1(fname){TC(x,0);rptr(x);U(r!=NULL);struct stat st;P(-1==stat(r->fname,&st),KRR(errno));
+K1(fname){TC(x,0);rptr(x);U(r);struct stat st;P(-1==stat(r->fname,&st),KRR(errno));
     S s;R -1==asprintf(&s,"%s%s",":",r->fname)?(K)0:ks(s);}
 
 /// detach c / detach c from current process, all ops but fname and rm are no-ops afterwards
-K1(detach){TC(x,0);rptr(x);U(r!=NULL);U(-1==rszshm_dt(r));RZ;}
+K1(detach){TC(x,0);rptr(x);U(r);U(-1==rszshm_dt(r));RZ;}
 
 /// rm c / rm the underlying shm file, preventing future processes from accessing it
-K1(rm){TC(x,0);rptr(x);U(r!=NULL);P(-1==rszshm_rm(r),KRR(errno));free(r);RZ;}
+K1(rm){TC(x,0);rptr(x);U(r);P(-1==rszshm_rm(r),KRR(errno));free(r);RZ;}
 
 /// xx:inc,dec,print c / xx:the value of counter, or nothing after detach or rm
-K1(inc){TC(x,0);U(xn==2);rptr(x);U(r!=NULL);U(r->dat!=NULL);U(r->fd!=-1);
+K1(inc){TC(x,0);U(xn==2);rptr(x);U(r);U(r->dat);U(r->fd!=-1);
     R kj(__atomic_add_fetch((J*)(r->dat),1,__ASC));}
-K1(dec){TC(x,0);U(xn==2);rptr(x);U(r!=NULL);U(r->dat!=NULL);U(r->fd!=-1);
+K1(dec){TC(x,0);U(xn==2);rptr(x);U(r);U(r->dat);U(r->fd!=-1);
     R kj(__atomic_sub_fetch((J*)(r->dat),1,__ASC));}
-K1(print){TC(x,0);U(xn==2);rptr(x);U(r!=NULL);U(r->dat!=NULL);U(r->fd!=-1);
+K1(print){TC(x,0);U(xn==2);rptr(x);U(r);U(r->dat);U(r->fd!=-1);
     J j;__atomic_load((J*)(r->dat),&j,__ASC);R kj(j);}
 
 typedef struct{S apiname; S fnname; V* fn; I argc;} cqacapi;
