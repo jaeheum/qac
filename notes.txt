@@ -26,6 +26,10 @@ typically less than half of RAM (see [tmpfs reference][tmpfs]).
 
 # Bugs
 
+## Lack of Reset API
+
+Reset of a running counter seems to imply extra coordination across its users.
+
 ## Memory leak
 
 Reusing a `detatch`ed but not yet `rm`ed counter can leak a small amount of memory
@@ -41,11 +45,15 @@ for the unfreed (`rm`) `rszshm` data structure.
 
 ### Content of the shm file
 
-    q)c:init 999999999
-    q)fname c
-    `:/dev/shm/rszshm_yjnYJh/0
-    q)\od -j 24 -l /dev/shm/rszshm_yjnYJh/0
-    "0000030            999999999                    0"
+```
+q)c:init 999999999
+q)fname c
+`:/dev/shm/rszshm_yjnYJh/0
+q)\od -j 24 -l /dev/shm/rszshm_yjnYJh/0
+"0000030            999999999                    0"
+```
+
+`rszshm` uses the first 24 bytes for its metadata.
 
 .- Reference
 .-

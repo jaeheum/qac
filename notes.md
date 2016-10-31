@@ -1,7 +1,7 @@
 
 Title: notes 
 
-Date: 20161019
+Date: 20161031
 
 <A name="toc1-7" title="Implementation Details" />
 # Implementation Details
@@ -29,13 +29,18 @@ typically less than half of RAM (see [tmpfs reference][tmpfs]).
 <A name="toc1-30" title="Bugs" />
 # Bugs
 
-<A name="toc2-33" title="Memory leak" />
+<A name="toc2-33" title="Lack of Reset API" />
+## Lack of Reset API
+
+Reset of a running counter seems to imply extra coordination across its users.
+
+<A name="toc2-38" title="Memory leak" />
 ## Memory leak
 
 Reusing a `detatch`ed but not yet `rm`ed counter can leak a small amount of memory
 for the unfreed (`rm`) `rszshm` data structure.
 
-<A name="toc2-39" title="Safety and security" />
+<A name="toc2-44" title="Safety and security" />
 ## Safety and security
 
 - Treat counters as opaque type
@@ -44,14 +49,18 @@ for the unfreed (`rm`) `rszshm` data structure.
 - Note that shm files can be read/modified, obeying the usual linux file acccess rights
 - If the shm file is removed from the file system `fname` and `rm` raise `'No such file or directory`
 
-<A name="toc3-48" title="Content of the shm file" />
+<A name="toc3-53" title="Content of the shm file" />
 ### Content of the shm file
 
-    q)c:init 999999999
-    q)fname c
-    `:/dev/shm/rszshm_yjnYJh/0
-    q)\od -j 24 -l /dev/shm/rszshm_yjnYJh/0
-    "0000030            999999999                    0"
+```
+q)c:init 999999999
+q)fname c
+`:/dev/shm/rszshm_yjnYJh/0
+q)\od -j 24 -l /dev/shm/rszshm_yjnYJh/0
+"0000030            999999999                    0"
+```
+
+`rszshm` uses the first 24 bytes for its metadata.
 
 [gccatomic]: https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html#g_t_005f_005fatomic-Builtins
 [rszshm]: http://ccodearchive.net/info/rszshm.html

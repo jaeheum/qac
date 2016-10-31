@@ -45,7 +45,7 @@ K1(init){TC(x,-KJ);struct rszshm*r;P(!rszshm_mkm(r,sizeof(J),NULL),KRR(errno));K
     memcpy((J*)r->dat,&xj,sizeof(J));
     R v=ktn(0,2),kK(v)[0]=kc(-KJ),kK(v)[1]=ptr(r),v;}
 
-/// c:restart fname / `:/dev/rszshm_blah/0 or fname c
+/// c:restart fname / `:/dev/rszshm_xxxxxx/0 or fname c
 K1(restart){TC(x,-KS);struct rszshm*r;P(!rszshm_atm(r,++xs),KRR(errno));K v;
     R v=ktn(0,2),kK(v)[0]=kc(-KJ),kK(v)[1]=ptr(r),v;}
 
